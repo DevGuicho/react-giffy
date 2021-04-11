@@ -1,24 +1,31 @@
-import logo from './logo.svg';
-import './App.css';
+import { lazy, Suspense } from "react";
+import "./App.css";
+import { Link, Route } from "wouter";
+import Detail from "./pages/Detail";
+import SearchResult from "./pages/SearchResult";
+import { GifsContextProvider } from "./context/GifsContext";
+
+const LazyHome = lazy(() => import("./pages/Home"));
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <GifsContextProvider>
+      <div className="App">
+        <header>
+          <Link className="title" to="/">
+            Giffy
+          </Link>
+        </header>
+        <Suspense fallback={null}>
+          <section className="App-content">
+            <Route path="/" component={LazyHome} />
+            <Route path="/search/:keyword" component={SearchResult} />
+            <Route path="/gif/:id" component={Detail} />
+            <Route path="/404" component={() => <h1>Error 404</h1>} />
+          </section>
+        </Suspense>
+      </div>
+    </GifsContextProvider>
   );
 }
 
