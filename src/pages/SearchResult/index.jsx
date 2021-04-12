@@ -33,6 +33,7 @@ const SearchResult = ({ params }) => {
     <>
       <Helmet>
         <title>{title} | Giffy</title>
+        <meta name="description" content="Rest of your search" />
       </Helmet>
       {loading ? (
         <div className="spinner">
