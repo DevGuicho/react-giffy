@@ -6,6 +6,7 @@ import Spinner from "../../components/Spinner";
 import TrendigSearches from "../../components/TrendigsSearches";
 import useGifs from "../../hooks/useGifs";
 import "./styles.css";
+import { Helmet } from "react-helmet";
 
 const Home = () => {
   // eslint-disable-next-line no-unused-vars
@@ -20,19 +21,24 @@ const Home = () => {
   );
 
   return (
-    <div className="Home">
-      <SearchForm onSubmit={handleSubmit} />
+    <>
+      <Helmet>
+        <title>Home | Giffy</title>
+      </Helmet>
+      <div className="Home">
+        <SearchForm onSubmit={handleSubmit} />
 
-      <h2>Última Búsqueda</h2>
-      {loading ? (
-        <div className="spinner">
-          <Spinner />
-        </div>
-      ) : (
-        <ListOfGifs gifs={gifs} />
-      )}
-      <TrendigSearches />
-    </div>
+        <h2>Última Búsqueda</h2>
+        {loading ? (
+          <div className="spinner">
+            <Spinner />
+          </div>
+        ) : (
+          <ListOfGifs gifs={gifs} />
+        )}
+        <TrendigSearches />
+      </div>
+    </>
   );
 };
 

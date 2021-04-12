@@ -1,7 +1,5 @@
 import { API_KEY } from "./settings";
 
-console.log(API_KEY);
-
 export default function getGifts({
   keyword = "panda",
   limit = 10,

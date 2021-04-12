@@ -13,7 +13,7 @@ const TrendigSearches = () => {
       <ul className="categories">
         {trends.map((item, index) => (
           <li className="category" key={index}>
-            <Link to={`/search/${item}`}>{item}</Link>
+            <Link to={`/search/${item.replace(" ", "-")}`}>{item}</Link>
           </li>
         ))}
       </ul>

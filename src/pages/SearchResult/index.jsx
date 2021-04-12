@@ -5,6 +5,8 @@ import "./styles.css";
 import useGifs from "../../hooks/useGifs";
 import useNearScreen from "../../hooks/useNearScreen";
 import debounce from "just-debounce-it";
+import useTitle from "../../hooks/useSEO";
+import { Helmet } from "react-helmet";
 
 const SearchResult = ({ params }) => {
   const { keyword } = params;
@@ -16,6 +18,8 @@ const SearchResult = ({ params }) => {
     once: false,
   });
 
+  const title = gifs ? `${gifs.length} Resultados de ${keyword}` : "";
+  useTitle({ title });
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const debounceHandleNextPage = useCallback(
     debounce(() => setPage((prevPage) => prevPage + 1), 1000),
@@ -27,6 +31,9 @@ const SearchResult = ({ params }) => {
   }, [debounceHandleNextPage, isNearScreen]);
   return (
     <>
+      <Helmet>
+        <title>{title} | Giffy</title>
+      </Helmet>
       {loading ? (
         <div className="spinner">
           <Spinner />
@@ -34,7 +41,7 @@ const SearchResult = ({ params }) => {
       ) : (
         <div>
           <h3 className="search__title">
-            Resultados para: {decodeURI(keyword)}
+            Resultados para: {keyword.replace("-", " ")}
           </h3>
           <ListOfGifs gifs={gifs} />
           <div id="visor" ref={externalRef}></div>
