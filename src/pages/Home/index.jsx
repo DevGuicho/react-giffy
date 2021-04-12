@@ -24,6 +24,7 @@ const Home = () => {
     <>
       <Helmet>
         <title>Home | Giffy</title>
+        <meta name="description" content="Busca tus gifs favoritos" />
       </Helmet>
       <div className="Home">
         <SearchForm onSubmit={handleSubmit} />
