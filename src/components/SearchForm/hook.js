@@ -23,7 +23,7 @@ const reducer = (state, action) => {
   }
 };
 
-export const useForm = ({ initialKeyword, initialRating }) => {
+export const useForm = ({ initialKeyword = "", initialRating = "g" } = {}) => {
   const [state, dispatch] = useReducer(reducer, {
     keyword: initialKeyword,
     rating: initialRating,

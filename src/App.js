@@ -1,26 +1,39 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useContext, useEffect } from "react";
 import "./App.css";
 import { Link, Route } from "wouter";
 import Detail from "./pages/Detail";
 import SearchResult from "./pages/SearchResult";
+import Header from "./components/Header";
+import Login from "./components/Login";
+
 import { GifsContextProvider } from "./context/GifsContext";
+import UserContext from "./context/user/userContext";
 
 const LazyHome = lazy(() => import("./pages/Home"));
 
 function App() {
+  const { authenticate, isLogged } = useContext(UserContext);
+  useEffect(() => {
+    if (!isLogged) authenticate();
+  }, [isLogged, authenticate]);
+
   return (
     <GifsContextProvider>
       <div className="App">
-        <header>
-          <Link className="title" to="/">
-            Giffy
-          </Link>
-        </header>
+        <div>
+          <Header />
+          <header>
+            <Link className="title" to="/">
+              Giffy
+            </Link>
+          </header>
+        </div>
         <Suspense fallback={null}>
           <section className="App-content">
             <Route path="/" component={LazyHome} />
             <Route path="/search/:keyword/:rating?" component={SearchResult} />
             <Route path="/gif/:id" component={Detail} />
+            <Route path="/login" component={Login} />
             <Route path="/404" component={() => <h1>Error 404</h1>} />
           </section>
         </Suspense>

@@ -1,6 +1,6 @@
 import React from "react";
 import { useLocation } from "wouter";
-import { useForm } from "./hooks";
+import { useForm } from "./hook";
 
 const RATINGS = ["g", "pg", "pg-13", "r"];
 
