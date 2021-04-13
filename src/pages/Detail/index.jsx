@@ -29,7 +29,7 @@ const Detail = ({ params }) => {
       </Helmet>
       <div className="detail">
         <div className="detail-container">
-          <Gif id={gif.id} title={gif.title} url={gif.url} />
+          <Gif id={gif.id} title={gif.title} url={gif.url} detail />
         </div>
       </div>
     </>

@@ -1,18 +1,40 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLocation } from "wouter";
+import { useForm } from "./hooks";
 
-const SearchForm = ({ onSubmit }) => {
-  const [keyword, setKeyword] = useState("");
+const RATINGS = ["g", "pg", "pg-13", "r"];
+
+const SearchForm = ({ initialKeyword = "", initialRating = "" }) => {
+  const { keyword, rating, updateKeyword, updateRating } = useForm({
+    initialKeyword,
+    initialRating,
+  });
+
+  const [, pushLocation] = useLocation();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ keyword });
+    pushLocation(`/search/${keyword.replace(" ", "-")}/${rating}`);
   };
+
   const handleChange = (e) => {
-    setKeyword(e.target.value);
+    updateKeyword(e.target.value);
+  };
+
+  const handleChangeRating = (e) => {
+    updateRating(e.target.value);
   };
 
   return (
     <form className="search-nav" onSubmit={handleSubmit}>
+      <select name="" id="" onChange={handleChangeRating}>
+        <option disable="true">Rating content</option>
+        {RATINGS.map((rating) => (
+          <option key={rating} value={rating}>
+            {rating}
+          </option>
+        ))}
+      </select>
       <input
         className="search-nav__input"
         type="text"

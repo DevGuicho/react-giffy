@@ -19,7 +19,7 @@ function App() {
         <Suspense fallback={null}>
           <section className="App-content">
             <Route path="/" component={LazyHome} />
-            <Route path="/search/:keyword" component={SearchResult} />
+            <Route path="/search/:keyword/:rating?" component={SearchResult} />
             <Route path="/gif/:id" component={Detail} />
             <Route path="/404" component={() => <h1>Error 404</h1>} />
           </section>

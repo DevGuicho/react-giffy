@@ -4,10 +4,11 @@ export default function getGifts({
   keyword = "panda",
   limit = 10,
   page = 0,
+  rating = "r",
 } = {}) {
   const apiURL = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}&offset=${
     page * limit
-  }&rating=r&lang=en`;
+  }&rating=${rating}&lang=en`;
   return fetch(apiURL)
     .then((data) => data.json())
     .then((res) => {

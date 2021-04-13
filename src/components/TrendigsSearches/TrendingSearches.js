@@ -9,7 +9,7 @@ const TrendigSearches = () => {
   }, []);
   return (
     <>
-      <h2>Búsquedas populares populares</h2>
+      <h2>Búsquedas populares</h2>
       <ul className="categories">
         {trends.map((item, index) => (
           <li className="category" key={index}>

@@ -7,11 +7,12 @@ import useNearScreen from "../../hooks/useNearScreen";
 import debounce from "just-debounce-it";
 import useTitle from "../../hooks/useSEO";
 import { Helmet } from "react-helmet";
+import SearchForm from "../../components/SearchForm";
 
 const SearchResult = ({ params }) => {
-  const { keyword } = params;
+  const { keyword, rating = "r" } = params;
 
-  const { loading, gifs, setPage } = useGifs({ keyword });
+  const { loading, gifs, setPage } = useGifs({ keyword, rating });
   const externalRef = useRef();
   const { isNearScreen } = useNearScreen({
     externalRef: loading ? null : externalRef,
@@ -40,6 +41,12 @@ const SearchResult = ({ params }) => {
         </div>
       ) : (
         <div>
+          <div className="center">
+            <SearchForm
+              initialKeyword={params.keyword.replace("-", " ")}
+              initialRating={params.rating}
+            />
+          </div>
           <h3 className="search__title">
             Resultados para: {keyword.replace("-", " ")}
           </h3>
