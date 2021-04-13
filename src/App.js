@@ -4,7 +4,7 @@ import { Link, Route } from "wouter";
 import Detail from "./pages/Detail";
 import SearchResult from "./pages/SearchResult";
 import Header from "./components/Header";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 
 import { GifsContextProvider } from "./context/GifsContext";
 import UserContext from "./context/user/userContext";

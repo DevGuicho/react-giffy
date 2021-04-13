@@ -4,7 +4,7 @@ import UserContext from "context/user/userContext";
 import Spinner from "components/Spinner";
 import "./styles.css";
 
-const Login = () => {
+const Login = ({ handleClose }) => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [, navigate] = useLocation();
 
@@ -22,11 +22,14 @@ const Login = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    login({ email: form.email, password: form.password });
+    login({ email: form.email, password: form.password }).then((res) => {
+      if (handleClose) handleClose();
+    });
   };
 
   return (
-    <form className="login" onSubmit={handleSubmit}>
+    <form className="form" onSubmit={handleSubmit}>
+      <label htmlFor="email">Username</label>
       <input
         type="email"
         name="email"
@@ -34,6 +37,7 @@ const Login = () => {
         placeholder="Email"
         onChange={handleChange}
       />
+      <label htmlFor="password">Passowrd</label>
       <input
         type="password"
         name="password"
@@ -41,7 +45,13 @@ const Login = () => {
         placeholder="Password"
         onChange={handleChange}
       />
-      {loading ? <Spinner /> : <button type="submit">Login</button>}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <button className="btn" type="submit">
+          Login
+        </button>
+      )}
     </form>
   );
 };
