@@ -1,33 +1,29 @@
-.gf-header {
+.Header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  padding: 15px;
+  height: 80px;
 }
-.gf-header a {
-  color: white;
-  font-size: 16px;
-  font-weight: bold;
+.Header__logo {
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
-.register-btn {
-  display: inline-block;
-  padding: 10px;
-  color: white;
-  background: #11698e;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-right: 12px;
+.Header__logo h2 {
+  color: #ccffbd;
+  font-size: 32px;
+  padding-right: 10px;
+  margin-right: 10px;
+  border-right: 2px solid white;
 }
-
-.login-btn {
-  display: inline-block;
-  padding: 7px 10px;
-  color: white;
-  background: none;
-  border: 2px solid #11698e;
-  border-radius: 5px;
-  cursor: pointer;
+.Header__logo p {
+  color: #eeebdd;
+}
+.Header__buttons {
+  display: flex;
+  align-items: center;
+}
+.Header__buttons a:last-child {
+  margin-left: 10px;
 }

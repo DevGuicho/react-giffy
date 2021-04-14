@@ -1,8 +1,7 @@
-export const SET_JWT = "SET_JWT";
-export const SET_ERROR = "SET_ERROR";
-export const SET_LOGIN = "SET_LOGIN";
+export const LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
+export const LOGIN_ERROR = "LOGIN_ERROR";
+export const REGISTER_SUCCESSFUL = "REGISTER_SUCCESSFUL";
+export const REGISTER_ERROR = "REGISTER_ERROR";
 export const SET_LOADING = "SET_LOADING";
-export const SET_LOGOUT = "SET_LOGOUT";
-export const ADD_FAV = "ADD_FAV";
-export const AUTH = "AUTH";
-export const SIGN_UP = "SIGN_UP";
+export const LOGOUT = "LOGOUT";
+export const SET_USER = "SET_USER";

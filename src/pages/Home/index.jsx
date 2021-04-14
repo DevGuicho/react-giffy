@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 
 import ListOfGifs from "../../components/ListOfGifs/ListOfGifs";
-import SearchForm from "../../components/SearchForm";
 import Spinner from "../../components/Spinner";
 import TrendigSearches from "../../components/TrendigsSearches";
-import useGifs from "../../hooks/useGifs";
 import "./styles.css";
 import { Helmet } from "react-helmet";
+import GifContext from "context/gif/gifContext";
 
 const Home = () => {
-  const { loading, gifs } = useGifs();
+  const { listOfGifs, isLoading, getListOfGifs } = useContext(GifContext);
+
+  useEffect(() => {
+    getListOfGifs({ rating: "r" });
+  }, []);
 
   return (
     <>
@@ -17,19 +20,11 @@ const Home = () => {
         <title>Home | Giffy</title>
         <meta name="description" content="Busca tus gifs favoritos" />
       </Helmet>
-      <div className="Home">
-        <SearchForm />
-
+      <main className="Home">
         <h2>Última Búsqueda</h2>
-        {loading ? (
-          <div className="spinner">
-            <Spinner />
-          </div>
-        ) : (
-          <ListOfGifs gifs={gifs} />
-        )}
+        {isLoading ? <Spinner /> : <ListOfGifs gifs={listOfGifs} />}
         <TrendigSearches />
-      </div>
+      </main>
     </>
   );
 };

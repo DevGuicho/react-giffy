@@ -1,29 +1,23 @@
-import React, { useContext } from "react";
-import { Link } from "wouter";
-import UserContext from "../../context/user/userContext";
+import React from "react";
+import { Link } from "react-router-dom";
+
 import "./styles.css";
 
 const Header = () => {
-  const { isLogged, logout } = useContext(UserContext);
-
-  const handleClick = (e) => {
-    logout();
-  };
-
   return (
-    <header className="gf-header">
-      {isLogged ? (
-        <button onClick={handleClick}>Logout</button>
-      ) : (
-        <>
-          <Link className="register-btn" to="/register">
-            register
-          </Link>
-          <Link className="login-btn" to="/login">
-            Login
-          </Link>
-        </>
-      )}
+    <header className="Header">
+      <Link className="Header__logo" to="/">
+        <h2>Giffy</h2>
+        <p>Gif the life</p>
+      </Link>
+      <div className="Header__buttons">
+        <Link className="btn" to="/login">
+          Login
+        </Link>
+        <Link className="btn outline" to="/register">
+          Register
+        </Link>
+      </div>
     </header>
   );
 };

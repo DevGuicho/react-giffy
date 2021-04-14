@@ -1,29 +1,26 @@
 import { useReducer } from "react";
-import loginService, {
-  addFavService,
-  authService,
-  signUp,
-} from "../../services/getLogin";
+import loginService, { authService, signUp } from "services/getLogin";
 import {
-  ADD_FAV,
-  AUTH,
-  SET_ERROR,
   SET_LOADING,
-  SET_LOGIN,
-  SET_LOGOUT,
+  LOGIN_SUCCESSFUL,
+  LOGIN_ERROR,
+  REGISTER_SUCCESSFUL,
+  REGISTER_ERROR,
+  LOGOUT,
+  SET_USER,
 } from "./types";
 import UserContext from "./userContext";
 import UserReducer from "./userReducer";
 
 const UserState = ({ children }) => {
   const initialState = {
-    loading: false,
-    error: null,
-    jwt: localStorage.getItem("token") || "",
-    favs: [],
+    isLoading: false,
     isLogged: false,
     user: {},
+    error: null,
+    token: localStorage.getItem("token"),
   };
+
   const [state, dispatch] = useReducer(UserReducer, initialState);
 
   const login = async ({ email, password }) => {
@@ -35,14 +32,13 @@ const UserState = ({ children }) => {
       const data = await loginService({ email, password });
 
       dispatch({
-        type: SET_LOGIN,
+        type: LOGIN_SUCCESSFUL,
         payload: data,
       });
       await authenticate();
     } catch (error) {
-      console.log("entre");
       dispatch({
-        type: SET_ERROR,
+        type: LOGIN_ERROR,
         payload: error.response.data,
       });
     }
@@ -50,71 +46,55 @@ const UserState = ({ children }) => {
 
   const logout = () => {
     dispatch({
-      type: SET_LOGOUT,
+      type: LOGOUT,
     });
-  };
-
-  const addFav = async ({ fav }) => {
-    try {
-      await addFavService({
-        token: state.jwt,
-        fav,
-        userId: state.user.id,
-      });
-      dispatch({
-        type: ADD_FAV,
-        payload: fav,
-      });
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const authenticate = async () => {
     const token = localStorage.getItem("token");
-    if (!token) return;
+    if (!token) logout();
     try {
       const { data } = await authService({ token });
       const { user } = data;
 
       dispatch({
-        type: AUTH,
+        type: SET_USER,
         payload: user,
       });
     } catch (error) {
       console.log(error);
       dispatch({
-        type: SET_ERROR,
+        type: LOGIN_ERROR,
         payload: error,
       });
     }
   };
-  const signup = async ({ email, password, name }) => {
+  const logUp = async ({ email, password, name }) => {
     try {
-      await signUp({ email, password, name });
-    } catch (error) {
-      console.log("hay error");
+      const respuesta = await signUp({ email, password, name });
       dispatch({
-        type: SET_ERROR,
+        type: REGISTER_SUCCESSFUL,
+        payload: respuesta,
+      });
+    } catch (error) {
+      dispatch({
+        type: REGISTER_ERROR,
         payload: error,
       });
-      throw new Error(error);
     }
   };
   return (
     <UserContext.Provider
       value={{
         user: state.user,
-        jwt: state.jwt,
-        loading: state.loading,
+        isLoading: state.isLoading,
         isLogged: state.isLogged,
         favs: state.favs,
         error: state.error,
         login,
         logout,
-        addFav,
         authenticate,
-        signup,
+        logUp,
       }}
     >
       {children}

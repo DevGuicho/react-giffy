@@ -1,35 +1,32 @@
-import React from "react";
-import { Redirect } from "wouter";
+import React, { useContext, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import Gif from "../../components/Gif";
 import Spinner from "../../components/Spinner";
-import useSingleGif from "../../hooks/useSingleGif";
 import { Helmet } from "react-helmet";
 import "./styles.css";
+import GifContext from "context/gif/gifContext";
 
-const Detail = ({ params }) => {
-  const { isError, gif, isLoading } = useSingleGif({ id: params.id });
-  const title = gif ? gif.title || "" : "Cargando...";
+const Detail = () => {
+  const { id } = useParams();
+  const { gif, getGif, isLoading } = useContext(GifContext);
+  const { title, id: gifId, url } = gif;
 
-  if (isLoading)
-    return (
-      <>
-        <Helmet>
-          <title>Cargando ...</title>
-        </Helmet>
-        <Spinner />
-      </>
-    );
-  if (isError) return <Redirect to="/404" />;
-  if (!gif) return null;
+  useEffect(() => {
+    getGif({ id });
+  }, []);
 
   return (
     <>
       <Helmet>
-        <title>{title} | Giffy</title>
+        <title>{isLoading ? "Cargando..." : `${title} | Giffy`}</title>
       </Helmet>
       <div className="detail">
         <div className="detail-container">
-          <Gif id={gif.id} title={gif.title} url={gif.url} detail />
+          {isLoading ? (
+            <Spinner />
+          ) : (
+            <Gif id={gifId} title={title} url={url} detail />
+          )}
         </div>
       </div>
     </>

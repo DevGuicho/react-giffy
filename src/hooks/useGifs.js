@@ -1,10 +1,20 @@
-import { useState, useEffect, useContext } from "react";
-import GifsContext from "../context/GifsContext";
-import getGifs from "../services/getGifs";
+import { useEffect, useContext } from "react";
+import GifContext from "context/gif/gifContext";
 
-const INITIAL_PAGE = 0;
+/* const INITIAL_PAGE = 0; */
 
-function useGifs({ keyword, rating } = { keyword: null }) {
+function useGifs({ keyword, rating } = {}) {
+  const { isLoading, listOfGifs, getListOfGifs } = useContext(GifContext);
+  const keywordToUse = keyword ? keyword : localStorage.getItem("keyword");
+
+  useEffect(() => {
+    getListOfGifs({ keyword: keywordToUse, rating });
+  }, [keywordToUse, rating, getListOfGifs]);
+
+  return { isLoading, listOfGifs };
+}
+
+/* function useGifs({ keyword, rating } = { keyword: null }) {
   const [loading, setLoading] = useState(false);
   const [loadingNextPage, setLoadingNextPage] = useState(false);
 
@@ -45,5 +55,5 @@ function useGifs({ keyword, rating } = { keyword: null }) {
 
   return { loading, loadingNextPage, gifs, setPage };
 }
-
+ */
 export default useGifs;

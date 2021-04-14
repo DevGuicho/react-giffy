@@ -1,7 +1,8 @@
 import React from "react";
-import { Link } from "wouter";
+import { Link } from "react-router-dom";
 import Fav from "../Fav";
 import "./Gif.css";
+
 const Gif = ({ title, url, id, detail }) => {
   if (detail)
     return (
@@ -14,9 +15,9 @@ const Gif = ({ title, url, id, detail }) => {
     );
   return (
     <div className="Gif">
-      <div className="Gif-button-fav">
+      {/* <div className="Gif-button-fav">
         <Fav id={id} url={url} />
-      </div>
+      </div> */}
       <Link to={`/gif/${id}`} className="ListOfGifs-item">
         <h4>{title}</h4>
         <img loading="lazy" src={url} alt="gif" />

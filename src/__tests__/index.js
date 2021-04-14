@@ -5,7 +5,7 @@ import {
   screen,
   waitForElement,
 } from "@testing-library/react";
-import App from "../App";
+import App from "../routes/App";
 
 test("home work as expected", async () => {
   const { container } = render(<App />);
