@@ -8,6 +8,7 @@ import Login from "./pages/Login";
 
 import { GifsContextProvider } from "./context/GifsContext";
 import UserContext from "./context/user/userContext";
+import RegisterPage from "pages/Register";
 
 const LazyHome = lazy(() => import("./pages/Home"));
 
@@ -34,6 +35,7 @@ function App() {
             <Route path="/search/:keyword/:rating?" component={SearchResult} />
             <Route path="/gif/:id" component={Detail} />
             <Route path="/login" component={Login} />
+            <Route path="/register" component={RegisterPage} />
             <Route path="/404" component={() => <h1>Error 404</h1>} />
           </section>
         </Suspense>

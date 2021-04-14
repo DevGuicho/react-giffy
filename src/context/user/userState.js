@@ -2,6 +2,7 @@ import { useReducer } from "react";
 import loginService, {
   addFavService,
   authService,
+  signUp,
 } from "../../services/getLogin";
 import {
   ADD_FAV,
@@ -88,6 +89,18 @@ const UserState = ({ children }) => {
       });
     }
   };
+  const signup = async ({ email, password, name }) => {
+    try {
+      await signUp({ email, password, name });
+    } catch (error) {
+      console.log("hay error");
+      dispatch({
+        type: SET_ERROR,
+        payload: error,
+      });
+      throw new Error(error);
+    }
+  };
   return (
     <UserContext.Provider
       value={{
@@ -96,10 +109,12 @@ const UserState = ({ children }) => {
         loading: state.loading,
         isLogged: state.isLogged,
         favs: state.favs,
+        error: state.error,
         login,
         logout,
         addFav,
         authenticate,
+        signup,
       }}
     >
       {children}

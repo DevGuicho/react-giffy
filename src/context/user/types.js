@@ -5,3 +5,4 @@ export const SET_LOADING = "SET_LOADING";
 export const SET_LOGOUT = "SET_LOGOUT";
 export const ADD_FAV = "ADD_FAV";
 export const AUTH = "AUTH";
+export const SIGN_UP = "SIGN_UP";

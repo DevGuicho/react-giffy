@@ -15,7 +15,14 @@ const Header = () => {
       {isLogged ? (
         <button onClick={handleClick}>Logout</button>
       ) : (
-        <Link to="/login">Login</Link>
+        <>
+          <Link className="register-btn" to="/register">
+            register
+          </Link>
+          <Link className="login-btn" to="/login">
+            Login
+          </Link>
+        </>
       )}
     </header>
   );

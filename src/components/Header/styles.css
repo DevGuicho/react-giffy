@@ -1,6 +1,7 @@
 .gf-header {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
   padding: 15px;
 }
 .gf-header a {
@@ -8,4 +9,25 @@
   font-size: 16px;
   font-weight: bold;
   text-decoration: none;
+}
+
+.register-btn {
+  display: inline-block;
+  padding: 10px;
+  color: white;
+  background: #11698e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 12px;
+}
+
+.login-btn {
+  display: inline-block;
+  padding: 7px 10px;
+  color: white;
+  background: none;
+  border: 2px solid #11698e;
+  border-radius: 5px;
+  cursor: pointer;
 }

@@ -1,5 +1,5 @@
 import axios from "axios";
-const ENDPOINT = "http://localhost:3001";
+const ENDPOINT = process.env.REACT_APP_API_URL;
 
 const loginService = ({ password, email }) => {
   return axios({
@@ -49,4 +49,18 @@ export const addFavService = async ({ token, fav, userId }) => {
     return error;
   }
 };
+
+export const signUp = async ({ email, password, name }) => {
+  const res = await axios({
+    url: `${ENDPOINT}/api/auth/sign-up`,
+    method: "post",
+    data: {
+      email,
+      password,
+      name,
+    },
+  });
+  return res;
+};
+
 export default loginService;
