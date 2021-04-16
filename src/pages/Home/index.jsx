@@ -12,7 +12,7 @@ const Home = () => {
 
   useEffect(() => {
     getListOfGifs({ rating: "r" });
-  }, []);
+  }, [getListOfGifs]);
 
   return (
     <>

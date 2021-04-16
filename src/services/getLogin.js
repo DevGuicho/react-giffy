@@ -31,7 +31,7 @@ export const authService = async ({ token }) => {
   }
 };
 
-export const addFavService = async ({ token, fav, userId }) => {
+export const addFavService = async ({ token, favorite, userId }) => {
   try {
     const res = await axios({
       url: `${ENDPOINT}/api/favorites`,
@@ -40,7 +40,7 @@ export const addFavService = async ({ token, fav, userId }) => {
         Authorization: `Bearer ${token}`,
       },
       data: {
-        url: fav,
+        url: favorite,
         user: userId,
       },
     });

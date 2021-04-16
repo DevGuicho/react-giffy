@@ -13,7 +13,7 @@ const Detail = () => {
 
   useEffect(() => {
     getGif({ id });
-  }, []);
+  }, [getGif, id]);
 
   return (
     <>

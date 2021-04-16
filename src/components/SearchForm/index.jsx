@@ -1,11 +1,17 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation } from "react-router";
 import "./SearchForm.css";
 
 const RATINGS = ["g", "pg", "pg-13", "r"];
 
-const SearchForm = ({ initialKeyword = "", initialRating = "" }) => {
+const SearchForm = ({ initialKeyword = "", initialRating = "", inHome }) => {
   const [search, setSearch] = useState("");
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === "/") setSearch("");
+  }, [location.pathname]);
+
   const history = useHistory();
   const handleChange = (e) => {
     setSearch(e.target.value);
@@ -13,7 +19,6 @@ const SearchForm = ({ initialKeyword = "", initialRating = "" }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    localStorage.setItem("lastKeyword", search);
     history.push(`/search/${search.replace(" ", "-")}`);
   };
 
@@ -26,6 +31,7 @@ const SearchForm = ({ initialKeyword = "", initialRating = "" }) => {
           type="text"
           placeholder="Search a gif here..."
           onChange={handleChange}
+          value={search}
         />
         <select name="" id="">
           <option disable="true">Rating content</option>

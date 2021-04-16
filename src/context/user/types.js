@@ -5,3 +5,4 @@ export const REGISTER_ERROR = "REGISTER_ERROR";
 export const SET_LOADING = "SET_LOADING";
 export const LOGOUT = "LOGOUT";
 export const SET_USER = "SET_USER";
+export const ADD_FAVORITE = "ADD_FAVORITE";

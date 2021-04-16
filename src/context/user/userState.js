@@ -1,5 +1,9 @@
-import { useReducer } from "react";
-import loginService, { authService, signUp } from "services/getLogin";
+import { useCallback, useReducer } from "react";
+import loginService, {
+  addFavService,
+  authService,
+  signUp,
+} from "services/getLogin";
 import {
   SET_LOADING,
   LOGIN_SUCCESSFUL,
@@ -8,6 +12,7 @@ import {
   REGISTER_ERROR,
   LOGOUT,
   SET_USER,
+  ADD_FAVORITE,
 } from "./types";
 import UserContext from "./userContext";
 import UserReducer from "./userReducer";
@@ -16,9 +21,10 @@ const UserState = ({ children }) => {
   const initialState = {
     isLoading: false,
     isLogged: false,
-    user: {},
+    user: { favorites: [] },
     error: null,
     token: localStorage.getItem("token"),
+    favorites: [],
   };
 
   const [state, dispatch] = useReducer(UserReducer, initialState);
@@ -44,15 +50,15 @@ const UserState = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     dispatch({
       type: LOGOUT,
     });
-  };
+  }, []);
 
-  const authenticate = async () => {
+  const authenticate = useCallback(async () => {
     const token = localStorage.getItem("token");
-    if (!token) logout();
+    if (!token) return;
     try {
       const { data } = await authService({ token });
       const { user } = data;
@@ -68,14 +74,16 @@ const UserState = ({ children }) => {
         payload: error,
       });
     }
-  };
+  }, []);
   const logUp = async ({ email, password, name }) => {
     try {
       const respuesta = await signUp({ email, password, name });
+
       dispatch({
         type: REGISTER_SUCCESSFUL,
-        payload: respuesta,
+        payload: respuesta.data.data.token,
       });
+      await authenticate();
     } catch (error) {
       dispatch({
         type: REGISTER_ERROR,
@@ -83,18 +91,37 @@ const UserState = ({ children }) => {
       });
     }
   };
+  const addFavorite = useCallback(
+    async ({ favorite }) => {
+      try {
+        await addFavService({
+          token: state.token,
+          favorite,
+          userId: state.user.id,
+        });
+        dispatch({
+          type: ADD_FAVORITE,
+          payload: favorite,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [state.token, state.user]
+  );
   return (
     <UserContext.Provider
       value={{
         user: state.user,
         isLoading: state.isLoading,
         isLogged: state.isLogged,
-        favs: state.favs,
         error: state.error,
+        favorites: state.favorites,
         login,
         logout,
         authenticate,
         logUp,
+        addFavorite,
       }}
     >
       {children}

@@ -1,60 +1,78 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import UserContext from "context/user/userContext";
-import { useLocation } from "wouter";
-
-const validateFields = (values) => {
-  const errors = {};
-  if (!values.email) errors.email = "Required username";
-  if (!values.password) errors.password = "Required password";
-  if (!values.name) errors.name = "Required name";
-  return errors;
-};
-
+import { useHistory } from "react-router-dom";
+import RegisterSchema from "utils/schema/RegisterSchema";
+import Spinner from "components/Spinner";
+import "components/Login/Login.css";
 const Register = () => {
-  const { signup, error } = useContext(UserContext);
-  const [, navigate] = useLocation();
+  const history = useHistory();
 
-  const handleSubmit = (values) => {
-    const { email, password, name } = values;
-    return signup({ email, password, name }).then((res) => {
-      return navigate("/login");
-    });
+  const { isLoading, logUp, isLogged } = useContext(UserContext);
+
+  const initialValues = {
+    name: "",
+    email: "",
+    password: "",
   };
 
+  useEffect(() => {
+    if (isLogged) history.push("/");
+  }, [isLogged, history]);
+
+  const handleSubmit = ({ email, password, name }) => {
+    logUp({ email, password, name });
+  };
   return (
-    <>
-      <h2>Formulario de Registro</h2>
-      <Formik
-        initialValues={{
-          email: "",
-          password: "",
-          name: "",
-        }}
-        validate={validateFields}
-        onSubmit={handleSubmit}
-      >
-        {({ isSubmitting }) => (
-          <Form className="form">
-            <Field type="email" name="email" />
-            <ErrorMessage name="email" component="div" />
-            <Field type="password" name="password" />
-            <ErrorMessage name="password" component="div" />
-            <Field type="text" name="name" />
-            <ErrorMessage name="name" component="div" />
-            <button
-              className="register-btn"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Registrarse
-            </button>
-            <ErrorMessage name="error" component="div" />
-            {error && <p>Ha habido un error</p>}
-          </Form>
+    <Formik
+      onSubmit={handleSubmit}
+      initialValues={initialValues}
+      validationSchema={RegisterSchema}
+    >
+      <Form className="form">
+        <h2>Sign Up to Giffy</h2>
+        <div className="input-control">
+          <label htmlFor="name">Name</label>
+          <div className="input">
+            <Field type="name" name="name" id="name" placeholder="Name" />
+            <i className="fas fa-user"></i>
+          </div>
+          <ErrorMessage className="form__error" name="name" component="span" />
+        </div>
+        <div className="input-control">
+          <label htmlFor="email">Email</label>
+          <div className="input">
+            <Field type="email" name="email" id="email" placeholder="Email" />
+            <i className="fas fa-user"></i>
+          </div>
+          <ErrorMessage className="form__error" name="email" component="span" />
+        </div>
+        <div className="input-control">
+          <label htmlFor="password">Passowrd</label>
+          <div className="input">
+            <Field
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+            />
+            <i className="fas fa-lock"></i>
+          </div>
+          <ErrorMessage
+            className="form__error"
+            component="span"
+            name="password"
+          />
+        </div>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <button className="btn pushUpBtn" type="submit">
+            Login
+          </button>
         )}
-      </Formik>
-    </>
+      </Form>
+    </Formik>
   );
 };
 

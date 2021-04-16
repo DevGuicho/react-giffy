@@ -4,14 +4,14 @@ import React, { useContext, useEffect, useState } from "react";
 import UserContext from "../../context/user/userContext";
 
 const Fav = ({ id }) => {
-  const { isLogged, addFav, favs } = useContext(UserContext);
+  const { isLogged, addFavorite, favorites } = useContext(UserContext);
 
   const [isFav, setIsFav] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const handleClick = (e) => {
     if (!isLogged) return setShowModal(true);
-    addFav({ fav: id });
+    addFavorite({ favorite: id });
   };
 
   const handleClose = () => {
@@ -19,8 +19,8 @@ const Fav = ({ id }) => {
   };
 
   useEffect(() => {
-    setIsFav(favs.some((favId) => favId === id));
-  }, [id, favs]);
+    setIsFav(favorites.some((favId) => favId === id));
+  }, [id, favorites]);
 
   return (
     <>

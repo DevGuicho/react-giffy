@@ -1,58 +1,74 @@
-import React, { useContext, useEffect, useState } from "react";
-import { useLocation } from "wouter";
+import React, { useContext, useEffect } from "react";
 import UserContext from "context/user/userContext";
 import Spinner from "components/Spinner";
-import "./styles.css";
+import { ErrorMessage, Field, Form, Formik } from "formik";
+import LoginSchema from "utils/schema/LoginSchema";
+
+import "./Login.css";
+import { useHistory } from "react-router-dom";
 
 const Login = ({ handleClose }) => {
-  const [form, setForm] = useState({ email: "", password: "" });
-  const [, navigate] = useLocation();
+  const history = useHistory();
 
-  const { login, isLogged, loading } = useContext(UserContext);
+  const { isLoading, login, isLogged } = useContext(UserContext);
+
+  const initialValues = {
+    email: "",
+    password: "",
+  };
 
   useEffect(() => {
-    if (isLogged) navigate("/");
-  }, [isLogged, navigate]);
+    if (isLogged) history.push("/");
+  }, [isLogged, history]);
 
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
-    });
-  };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    login({ email: form.email, password: form.password }).then((res) => {
+  const handleSubmit = ({ email, password }) => {
+    login({ email, password }).then((res) => {
       if (handleClose) handleClose();
     });
   };
 
   return (
-    <form className="form" onSubmit={handleSubmit}>
-      <label htmlFor="email">Username</label>
-      <input
-        type="email"
-        name="email"
-        id="email"
-        placeholder="Email"
-        onChange={handleChange}
-      />
-      <label htmlFor="password">Passowrd</label>
-      <input
-        type="password"
-        name="password"
-        id="password"
-        placeholder="Password"
-        onChange={handleChange}
-      />
-      {loading ? (
-        <Spinner />
-      ) : (
-        <button className="btn" type="submit">
-          Login
-        </button>
-      )}
-    </form>
+    <Formik
+      onSubmit={handleSubmit}
+      initialValues={initialValues}
+      validationSchema={LoginSchema}
+    >
+      <Form className="form">
+        <h2>Login to Giffy</h2>
+        <div className="input-control">
+          <label htmlFor="email">Username</label>
+          <div className="input">
+            <Field type="email" name="email" id="email" placeholder="Email" />
+            <i className="fas fa-user"></i>
+          </div>
+          <ErrorMessage className="form__error" name="email" component="span" />
+        </div>
+        <div className="input-control">
+          <label htmlFor="password">Passowrd</label>
+          <div className="input">
+            <Field
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+            />
+            <i className="fas fa-lock"></i>
+          </div>
+          <ErrorMessage
+            className="form__error"
+            component="span"
+            name="password"
+          />
+        </div>
+        {isLoading ? (
+          <Spinner />
+        ) : (
+          <button className="btn pushUpBtn" type="submit">
+            Login
+          </button>
+        )}
+      </Form>
+    </Formik>
   );
 };
 
