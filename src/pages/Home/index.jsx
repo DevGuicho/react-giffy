@@ -11,7 +11,7 @@ const Home = () => {
   const { listOfGifs, isLoading, getListOfGifs } = useContext(GifContext);
 
   useEffect(() => {
-    getListOfGifs({ rating: "r" });
+    getListOfGifs({ rating: "r", page: 0 });
   }, [getListOfGifs]);
 
   return (

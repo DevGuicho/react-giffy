@@ -14,11 +14,11 @@ export default (state, action) => {
   switch (action.type) {
     case REGISTER_SUCCESSFUL:
     case LOGIN_SUCCESSFUL:
-      localStorage.setItem("token", action.payload);
+      localStorage.setItem("token", action.payload.token);
       return {
         ...state,
         isLogged: true,
-        isLoading: false,
+        isLoading: true,
         error: null,
       };
     case SET_USER:
@@ -42,7 +42,7 @@ export default (state, action) => {
         ...state,
         error: action.payload,
         isLogged: false,
-        loading: false,
+        isLoading: false,
         user: {},
       };
     case LOGOUT:

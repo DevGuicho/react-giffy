@@ -36,11 +36,11 @@ const UserState = ({ children }) => {
       });
 
       const data = await loginService({ email, password });
-
       dispatch({
         type: LOGIN_SUCCESSFUL,
         payload: data,
       });
+
       await authenticate();
     } catch (error) {
       dispatch({
@@ -81,7 +81,7 @@ const UserState = ({ children }) => {
 
       dispatch({
         type: REGISTER_SUCCESSFUL,
-        payload: respuesta.data.data.token,
+        payload: respuesta.data.data,
       });
       await authenticate();
     } catch (error) {

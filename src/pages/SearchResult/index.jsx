@@ -35,6 +35,10 @@ const SearchResult = () => {
     localStorage.setItem("lastKeyword", keyword);
   }, [getListOfGifs, page, keyword]);
 
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
   const observer = useRef();
   const lastBookElementRef = useCallback((node) => {
     if (observer.current) observer.current.disconnect();

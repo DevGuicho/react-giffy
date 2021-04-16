@@ -24,7 +24,7 @@ const GifState = ({ children }) => {
   const [state, dispatch] = useReducer(GifReducer, initialState);
 
   const getListOfGifs = useCallback(async ({ keyword, rating, page }) => {
-    if (!page)
+    if (page === 0)
       dispatch({
         type: SET_LOADING,
       });
@@ -37,7 +37,7 @@ const GifState = ({ children }) => {
         rating,
         page,
       });
-      if (page)
+      if (page !== 0)
         dispatch({
           type: ADD_GIFS_SUCCESFULL,
           payload: listOfGifs,
