@@ -1,18 +1,21 @@
 import { useEffect, useState } from "react";
 import { getGifs } from "services/gifServices";
 
-const useGifs = ({ keyword, limit, offset, rating }) => {
+const useGifs = ({ keyword, limit, rating, page }) => {
   const [listOfGifs, setListOfGifs] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingNewGifs, setIsLoadingNewGifs] = useState(false);
 
   useEffect(() => {
-    getGifs({ keyword, limit, offset, rating }).then((gifs) => {
-      setListOfGifs(gifs);
+    if (page > 0) setIsLoadingNewGifs(true);
+    getGifs({ keyword, limit, page, rating }).then((gifs) => {
+      setListOfGifs((list) => [...list, ...gifs]);
       setIsLoading(false);
+      setIsLoadingNewGifs(false);
     });
-  }, [keyword, limit, offset, rating]);
+  }, [keyword, limit, page, rating]);
 
-  return { isLoading, listOfGifs };
+  return { isLoading, listOfGifs, isLoadingNewGifs };
 };
 
 export default useGifs;

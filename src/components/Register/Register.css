@@ -1,0 +1,13 @@
+.btn-register {
+  width: 100%;
+  padding: 15px 10px;
+  color: white;
+  background: #11698e;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-register[disabled] {
+  opacity: 0.3;
+  pointer-events: none;
+}

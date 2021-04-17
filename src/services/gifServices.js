@@ -5,11 +5,13 @@ export const getGifs = async ({
   keyword = "random",
   limit = "15",
   rating = "r",
-  offset = "0",
+  page = "0",
 }) => {
-  console.log({ keyword, limit, rating, offset });
+  console.log({ keyword, limit, rating, page });
   const response = await axios({
-    url: `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${keyword}&limit=${limit}&offset=${offset}&rating=${rating}`,
+    url: `https://api.giphy.com/v1/gifs/search?api_key=${apiKey}&q=${keyword}&limit=${limit}&offset=${
+      page * limit
+    }&rating=${rating}`,
     method: "GET",
   });
 

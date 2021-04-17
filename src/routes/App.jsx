@@ -7,6 +7,8 @@ const { BrowserRouter, Switch, Route } = require("react-router-dom");
 const LazyHome = lazy(() => import("../pages/Home"));
 const LazySearchResult = lazy(() => import("../pages/SearchResult"));
 const LazyGif = lazy(() => import("../pages/GifDetail"));
+const LazyLogin = lazy(() => import("../pages/LoginPage"));
+const LazyRegister = lazy(() => import("../pages/RegisterPage"));
 
 const App = () => {
   return (
@@ -17,6 +19,8 @@ const App = () => {
             <Route exact path="/" component={LazyHome} />
             <Route exact path="/search/:keyword" component={LazySearchResult} />
             <Route exact path="/gif/:id" component={LazyGif} />
+            <Route exact path="/login" component={LazyLogin} />
+            <Route exact path="/register" component={LazyRegister} />
           </Suspense>
         </Switch>
       </Layout>
