@@ -3,7 +3,16 @@ import { useContext, useState } from "react";
 
 const useUser = () => {
   const [isLoading, setIsloading] = useState(false);
-  const { login, isLogged, logout, error, logUp } = useContext(UserContext);
+  const {
+    login,
+    isLogged,
+    logout,
+    error,
+    logUp,
+    user,
+    favorites,
+    authenticate,
+  } = useContext(UserContext);
 
   const logIn = ({ email, password }) => {
     setIsloading(true);
@@ -12,7 +21,18 @@ const useUser = () => {
       return true;
     });
   };
-  return { login, isLogged, logIn, error, isLoading, logout, logUp };
+  return {
+    login,
+    isLogged,
+    logIn,
+    error,
+    isLoading,
+    logout,
+    logUp,
+    user,
+    favorites,
+    authenticate,
+  };
 };
 
 export default useUser;

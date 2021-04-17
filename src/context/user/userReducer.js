@@ -1,8 +1,11 @@
 import {
+  ADD_FAVORITE,
   LOGIN_ERROR,
   LOGIN_SUCCESSFUL,
   LOGOUT,
   LOGUP_SUCCESSFUL,
+  AUTH,
+  DELETE_FAVORITE,
 } from "./type";
 
 export default function userReducer(state, action) {
@@ -13,6 +16,15 @@ export default function userReducer(state, action) {
       return {
         ...state,
         user: action.payload.user,
+        isLogged: true,
+        error: null,
+      };
+    }
+    case AUTH: {
+      return {
+        ...state,
+        user: action.payload.user,
+        favorites: action.payload.favorites,
         isLogged: true,
         error: null,
       };
@@ -35,6 +47,17 @@ export default function userReducer(state, action) {
         isLogged: false,
         favorites: [],
         error: null,
+      };
+    case ADD_FAVORITE: {
+      return {
+        ...state,
+        favorites: [...state.favorites, action.payload],
+      };
+    }
+    case DELETE_FAVORITE:
+      return {
+        ...state,
+        favorites: state.favorites.filter((fav) => fav.id !== action.payload),
       };
     default: {
       return state;

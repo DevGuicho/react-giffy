@@ -1,6 +1,7 @@
 import Layout from "components/Layout";
 import Spinner from "components/Spinner";
-import { lazy, Suspense } from "react";
+import useUser from "Hooks/useUser";
+import { lazy, Suspense, useEffect } from "react";
 
 const { BrowserRouter, Switch, Route } = require("react-router-dom");
 
@@ -11,6 +12,14 @@ const LazyLogin = lazy(() => import("../pages/LoginPage"));
 const LazyRegister = lazy(() => import("../pages/RegisterPage"));
 
 const App = () => {
+  const { authenticate, isLogged } = useUser();
+
+  useEffect(() => {
+    if (!isLogged) {
+      authenticate();
+    }
+  }, [authenticate, isLogged]);
+
   return (
     <BrowserRouter>
       <Layout>

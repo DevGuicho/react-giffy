@@ -15,7 +15,9 @@ const ListOfTrendings = () => {
         <ol>
           {ListOfTrendings.map((trending) => (
             <li key={trending}>
-              <Link to={`/search/${trending}`}>{trending}</Link>
+              <Link to={`/search/${trending.replace(/ /g, "-")}`}>
+                {trending}
+              </Link>
             </li>
           ))}
         </ol>

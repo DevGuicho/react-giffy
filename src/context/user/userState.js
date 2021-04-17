@@ -7,7 +7,17 @@ import {
   LOGIN_ERROR,
   LOGOUT,
   LOGUP_SUCCESSFUL,
+  ADD_FAVORITE,
+  GET_FAVORITES,
+  AUTH,
+  DELETE_FAVORITE,
 } from "./type";
+import {
+  addFavoriteService,
+  deleteFavoriteService,
+  getFavoritesService,
+} from "services/getFavorites";
+import { authenticateService } from "services/getUserServices";
 
 const UserState = ({ children }) => {
   const initialState = {
@@ -76,6 +86,65 @@ const UserState = ({ children }) => {
       type: LOGOUT,
     });
   }, []);
+
+  const getFavorites = useCallback(async () => {
+    try {
+      const favorites = await getFavoritesService({
+        userId: state.user.id,
+        token: localStorage.getItem("token"),
+      });
+      dispatch({
+        type: GET_FAVORITES,
+        payload: favorites,
+      });
+    } catch (error) {}
+  }, [state.user.id]);
+
+  const addFavorite = useCallback(
+    async ({ gifId }) => {
+      try {
+        const favorite = await addFavoriteService({
+          token: localStorage.getItem("token"),
+          userId: state.user.id,
+          gifId,
+        });
+        dispatch({
+          type: ADD_FAVORITE,
+          payload: favorite,
+        });
+        return favorite;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    [state.user.id]
+  );
+  const deleteFavorite = useCallback(async ({ id }) => {
+    const token = localStorage.getItem("token");
+    try {
+      await deleteFavoriteService({ id, token });
+      dispatch({
+        type: DELETE_FAVORITE,
+        payload: id,
+      });
+    } catch (error) {}
+  }, []);
+
+  const authenticate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const response = await authenticateService({ token });
+      dispatch({
+        type: AUTH,
+        payload: response,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGOUT,
+      });
+    }
+  };
   return (
     <UserContext.Provider
       value={{
@@ -86,6 +155,10 @@ const UserState = ({ children }) => {
         login,
         logout,
         logUp,
+        addFavorite,
+        getFavorites,
+        deleteFavorite,
+        authenticate,
       }}
     >
       {children}
