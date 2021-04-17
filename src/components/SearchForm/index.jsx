@@ -1,37 +1,34 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation } from "react-router";
+import React, { useState } from "react";
+import { useHistory } from "react-router";
 import "./SearchForm.css";
 
 const RATINGS = ["g", "pg", "pg-13", "r"];
 
-const SearchForm = ({ initialKeyword = "", initialRating = "", inHome }) => {
-  const [search, setSearch] = useState("");
-  const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname === "/") setSearch("");
-  }, [location.pathname]);
-
+const SearchForm = () => {
+  const [keyword, setKeyword] = useState("");
   const history = useHistory();
+
   const handleChange = (e) => {
-    setSearch(e.target.value);
+    setKeyword(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    history.push(`/search/${search.replace(" ", "-")}`);
+    history.push(`/search/${keyword.replace(/ /g, "-")}`);
   };
 
   return (
     <section className="SearchForm">
       <form className="search-form" onSubmit={handleSubmit}>
-        <button className="btn">Buscar</button>
+        <button className="btn" type="submit">
+          Buscar
+        </button>
         <input
           className="search-nav__input"
           type="text"
-          placeholder="Search a gif here..."
+          name="search"
+          id="search"
           onChange={handleChange}
-          value={search}
         />
         <select name="" id="">
           <option disable="true">Rating content</option>
@@ -46,4 +43,4 @@ const SearchForm = ({ initialKeyword = "", initialRating = "", inHome }) => {
   );
 };
 
-export default React.memo(SearchForm);
+export default SearchForm;

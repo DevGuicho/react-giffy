@@ -1,67 +1,66 @@
 import {
-  SET_LOADING,
-  LOGOUT,
-  SET_USER,
-  LOGIN_SUCCESSFUL,
-  REGISTER_SUCCESSFUL,
-  LOGIN_ERROR,
-  REGISTER_ERROR,
   ADD_FAVORITE,
-} from "./types";
+  LOGIN_ERROR,
+  LOGIN_SUCCESSFUL,
+  LOGOUT,
+  LOGUP_SUCCESSFUL,
+  AUTH,
+  DELETE_FAVORITE,
+} from "./type";
 
-// eslint-disable-next-line import/no-anonymous-default-export
-export default (state, action) => {
+export default function userReducer(state, action) {
   switch (action.type) {
-    case REGISTER_SUCCESSFUL:
-    case LOGIN_SUCCESSFUL:
+    case LOGUP_SUCCESSFUL:
+    case LOGIN_SUCCESSFUL: {
       localStorage.setItem("token", action.payload.token);
       return {
         ...state,
+        user: action.payload.user,
         isLogged: true,
-        isLoading: true,
         error: null,
       };
-    case SET_USER:
+    }
+    case AUTH: {
       return {
         ...state,
+        user: action.payload.user,
+        favorites: action.payload.favorites,
         isLogged: true,
-        isLoading: false,
-        user: action.payload,
-        favorites: action.payload.favorites.map((fav) => fav.url),
+        error: null,
       };
-    case SET_LOADING:
-      return {
-        ...state,
-        loading: true,
-      };
-
-    case LOGIN_ERROR:
-    case REGISTER_ERROR:
+    }
+    case LOGIN_ERROR: {
       localStorage.removeItem("token");
       return {
         ...state,
-        error: action.payload,
-        isLogged: false,
-        isLoading: false,
         user: {},
+        isLogged: false,
+        favorites: [],
+        error: action.payload,
       };
+    }
     case LOGOUT:
       localStorage.removeItem("token");
       return {
         ...state,
-        isLogged: false,
-        isLoading: false,
-        jwt: null,
         user: {},
-        error: null,
+        isLogged: false,
         favorites: [],
+        error: null,
       };
-    case ADD_FAVORITE:
+    case ADD_FAVORITE: {
       return {
         ...state,
         favorites: [...state.favorites, action.payload],
       };
-    default:
+    }
+    case DELETE_FAVORITE:
+      return {
+        ...state,
+        favorites: state.favorites.filter((fav) => fav.id !== action.payload),
+      };
+    default: {
       return state;
+    }
   }
-};
+}

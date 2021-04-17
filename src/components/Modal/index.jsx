@@ -5,12 +5,12 @@ import "./Modal.css";
 const Modal = ({ children, handleClose }) => {
   return (
     <div className="modal">
-      <div className="modal-content">
-        <button className="btn-modal" onClick={handleClose}>
+      <button className="" onClick={handleClose}>
+        <span aria-label="Fav Gif" role="img">
           <i className="fas fa-times-circle"></i>
-        </button>
-        {children}
-      </div>
+        </span>
+      </button>
+      <div className="modal-content">{children}</div>
     </div>
   );
 };

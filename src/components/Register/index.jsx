@@ -1,14 +1,14 @@
-import React, { useContext, useEffect } from "react";
+import React, { useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import UserContext from "context/user/userContext";
 import { useHistory } from "react-router-dom";
 import RegisterSchema from "utils/schema/RegisterSchema";
 import Spinner from "components/Spinner";
 import "components/Login/Login.css";
+import useUser from "Hooks/useUser";
 const Register = () => {
   const history = useHistory();
 
-  const { isLoading, logUp, isLogged } = useContext(UserContext);
+  const { isLoading, logUp, isLogged, error } = useUser();
 
   const initialValues = {
     name: "",
@@ -71,6 +71,7 @@ const Register = () => {
             Login
           </button>
         )}
+        {error && <p>{error}</p>}
       </Form>
     </Formik>
   );

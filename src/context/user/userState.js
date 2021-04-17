@@ -1,127 +1,164 @@
 import { useCallback, useReducer } from "react";
-import loginService, {
-  addFavService,
-  authService,
-  signUp,
-} from "services/getLogin";
+import userReducer from "./userReducer";
+import UserContext from "./userContext";
+import axios from "axios";
 import {
-  SET_LOADING,
   LOGIN_SUCCESSFUL,
   LOGIN_ERROR,
-  REGISTER_SUCCESSFUL,
-  REGISTER_ERROR,
   LOGOUT,
-  SET_USER,
+  LOGUP_SUCCESSFUL,
   ADD_FAVORITE,
-} from "./types";
-import UserContext from "./userContext";
-import UserReducer from "./userReducer";
+  GET_FAVORITES,
+  AUTH,
+  DELETE_FAVORITE,
+} from "./type";
+import {
+  addFavoriteService,
+  deleteFavoriteService,
+  getFavoritesService,
+} from "services/getFavorites";
+import { authenticateService } from "services/getUserServices";
 
 const UserState = ({ children }) => {
   const initialState = {
-    isLoading: false,
-    isLogged: false,
-    user: { favorites: [] },
-    error: null,
-    token: localStorage.getItem("token"),
+    user: {},
     favorites: [],
+    isLogged: false,
+    error: null,
   };
+  const [state, dispatch] = useReducer(userReducer, initialState);
 
-  const [state, dispatch] = useReducer(UserReducer, initialState);
-
-  const login = async ({ email, password }) => {
+  const login = useCallback(async ({ email, password }) => {
     try {
-      dispatch({
-        type: SET_LOADING,
+      const response = await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/api/auth/sign-in`,
+        auth: {
+          username: email,
+          password,
+        },
       });
 
-      const data = await loginService({ email, password });
       dispatch({
         type: LOGIN_SUCCESSFUL,
-        payload: data,
+        payload: response.data.data,
       });
-
-      await authenticate();
     } catch (error) {
       dispatch({
         type: LOGIN_ERROR,
-        payload: error.response.data,
+        payload: "Correo o Contraseña invalida",
+      });
+    }
+  }, []);
+
+  const logUp = async ({ name, email, password }) => {
+    try {
+      const response = await axios({
+        method: "POST",
+        url: `${process.env.REACT_APP_API_URL}/api/auth/sign-up`,
+        data: {
+          name,
+          email,
+          password,
+        },
+      });
+      const { id, token } = response.data.data;
+      dispatch({
+        type: LOGUP_SUCCESSFUL,
+        payload: {
+          user: {
+            name,
+            email,
+            id,
+          },
+          token,
+        },
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGIN_ERROR,
+        payload: "El correo ya ha sido registrado",
       });
     }
   };
-
   const logout = useCallback(() => {
     dispatch({
       type: LOGOUT,
     });
   }, []);
 
-  const authenticate = useCallback(async () => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
+  const getFavorites = useCallback(async () => {
     try {
-      const { data } = await authService({ token });
-      const { user } = data;
+      const favorites = await getFavoritesService({
+        userId: state.user.id,
+        token: localStorage.getItem("token"),
+      });
+      dispatch({
+        type: GET_FAVORITES,
+        payload: favorites,
+      });
+    } catch (error) {}
+  }, [state.user.id]);
 
-      dispatch({
-        type: SET_USER,
-        payload: user,
-      });
-    } catch (error) {
-      console.log(error);
-      dispatch({
-        type: LOGIN_ERROR,
-        payload: error,
-      });
-    }
-  }, []);
-  const logUp = async ({ email, password, name }) => {
-    try {
-      const respuesta = await signUp({ email, password, name });
-
-      dispatch({
-        type: REGISTER_SUCCESSFUL,
-        payload: respuesta.data.data,
-      });
-      await authenticate();
-    } catch (error) {
-      dispatch({
-        type: REGISTER_ERROR,
-        payload: error,
-      });
-    }
-  };
   const addFavorite = useCallback(
-    async ({ favorite }) => {
+    async ({ gifId }) => {
       try {
-        await addFavService({
-          token: state.token,
-          favorite,
+        const favorite = await addFavoriteService({
+          token: localStorage.getItem("token"),
           userId: state.user.id,
+          gifId,
         });
         dispatch({
           type: ADD_FAVORITE,
           payload: favorite,
         });
+        return favorite;
       } catch (error) {
         console.log(error);
       }
     },
-    [state.token, state.user]
+    [state.user.id]
   );
+  const deleteFavorite = useCallback(async ({ id }) => {
+    const token = localStorage.getItem("token");
+    try {
+      await deleteFavoriteService({ id, token });
+      dispatch({
+        type: DELETE_FAVORITE,
+        payload: id,
+      });
+    } catch (error) {}
+  }, []);
+
+  const authenticate = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+    try {
+      const response = await authenticateService({ token });
+      dispatch({
+        type: AUTH,
+        payload: response,
+      });
+    } catch (error) {
+      dispatch({
+        type: LOGOUT,
+      });
+    }
+  };
   return (
     <UserContext.Provider
       value={{
         user: state.user,
-        isLoading: state.isLoading,
+        favorites: state.favorites,
         isLogged: state.isLogged,
         error: state.error,
-        favorites: state.favorites,
         login,
         logout,
-        authenticate,
         logUp,
         addFavorite,
+        getFavorites,
+        deleteFavorite,
+        authenticate,
       }}
     >
       {children}

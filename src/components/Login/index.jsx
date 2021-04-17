@@ -1,16 +1,16 @@
-import React, { useContext, useEffect } from "react";
-import UserContext from "context/user/userContext";
+import React, { useEffect } from "react";
 import Spinner from "components/Spinner";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import LoginSchema from "utils/schema/LoginSchema";
 
 import "./Login.css";
 import { useHistory } from "react-router-dom";
+import useUser from "Hooks/useUser";
 
 const Login = ({ handleClose }) => {
   const history = useHistory();
 
-  const { isLoading, login, isLogged } = useContext(UserContext);
+  const { logIn, isLogged, isLoading, error } = useUser();
 
   const initialValues = {
     email: "",
@@ -18,11 +18,11 @@ const Login = ({ handleClose }) => {
   };
 
   useEffect(() => {
-    if (isLogged) history.push("/");
-  }, [isLogged, history]);
+    if (isLogged && !handleClose) history.push("/");
+  }, [isLogged, history, handleClose]);
 
   const handleSubmit = ({ email, password }) => {
-    login({ email, password }).then((res) => {
+    logIn({ email, password }).then(() => {
       if (handleClose) handleClose();
     });
   };
@@ -67,6 +67,7 @@ const Login = ({ handleClose }) => {
             Login
           </button>
         )}
+        {error && <p>{error}</p>}
       </Form>
     </Formik>
   );

@@ -3,33 +3,24 @@
 }
 
 .ListOfGifs {
+  min-height: 100vh;
+  width: 100%;
+  padding: 20px 0;
+}
+.ListOfGifs-grid {
+  list-style: none;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 10px;
-  min-height: 100vh;
-  width: 100%;
   align-items: center;
 }
 
 .ListOfGifs-item {
-  display: inline-block;
+  display: flex;
+  align-items: center;
   width: 100%;
-  position: relative;
-  margin-bottom: 20px;
-}
-.ListOfGifs-item img {
-  width: 100%;
-}
-.ListOfGifs-item h4 {
-  color: white;
-  position: absolute;
-  bottom: 5px;
-  left: 0;
-  font-size: 10px;
-  padding: 0;
-  background: rgba(0, 0, 0, 0.5);
-  font-weight: normal;
-  padding: 5px;
+  height: 100%;
+  min-height: 150px;
 }
 
 @media (min-width: 600px) {
