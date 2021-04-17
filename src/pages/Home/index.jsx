@@ -1,31 +1,24 @@
-import React, { useContext, useEffect } from "react";
-
-import ListOfGifs from "../../components/ListOfGifs/ListOfGifs";
-import Spinner from "../../components/Spinner";
-import TrendigSearches from "../../components/TrendigsSearches";
-import "./styles.css";
-import { Helmet } from "react-helmet";
-import GifContext from "context/gif/gifContext";
+import ListOfGifs from "components/ListOfGifs";
+import ListOfTrendings from "components/ListOfTrendings";
+import SearchForm from "components/SearchForm";
+import Spinner from "components/Spinner";
+import useGifs from "Hooks/useGifs";
+import React from "react";
 
 const Home = () => {
-  const { listOfGifs, isLoading, getListOfGifs } = useContext(GifContext);
-
-  useEffect(() => {
-    getListOfGifs({ rating: "r", page: 0 });
-  }, [getListOfGifs]);
+  const keyword = localStorage.getItem("lastKeyword");
+  const { isLoading, listOfGifs } = useGifs({ keyword });
 
   return (
-    <>
-      <Helmet>
-        <title>Home | Giffy</title>
-        <meta name="description" content="Busca tus gifs favoritos" />
-      </Helmet>
-      <main className="Home">
-        <h2>Última Búsqueda</h2>
-        {isLoading ? <Spinner /> : <ListOfGifs gifs={listOfGifs} />}
-        <TrendigSearches />
-      </main>
-    </>
+    <main className="Home">
+      <SearchForm />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <ListOfGifs title="Última Búsqueda" listOfGifs={listOfGifs} />
+      )}
+      <ListOfTrendings />
+    </main>
   );
 };
 

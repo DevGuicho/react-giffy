@@ -1,8 +1,0 @@
-export const LOGIN_SUCCESSFUL = "LOGIN_SUCCESSFUL";
-export const LOGIN_ERROR = "LOGIN_ERROR";
-export const REGISTER_SUCCESSFUL = "REGISTER_SUCCESSFUL";
-export const REGISTER_ERROR = "REGISTER_ERROR";
-export const SET_LOADING = "SET_LOADING";
-export const LOGOUT = "LOGOUT";
-export const SET_USER = "SET_USER";
-export const ADD_FAVORITE = "ADD_FAVORITE";
