@@ -2,19 +2,20 @@ import React from "react";
 import Spinner from "components/Spinner";
 import useTrendings from "Hooks/useTrendings";
 import { Link } from "react-router-dom";
+import "./ListOfTrendings.css";
 
 const ListOfTrendings = () => {
   const { isLoading, ListOfTrendings } = useTrendings();
 
   return (
-    <section className="ListOfTrendings">
+    <section className="TrendingSearches">
       <h2>Busquedas Populares</h2>
       {isLoading ? (
         <Spinner />
       ) : (
-        <ol>
+        <ol className="categories">
           {ListOfTrendings.map((trending) => (
-            <li key={trending}>
+            <li className="categorie" key={trending}>
               <Link to={`/search/${trending.replace(/ /g, "-")}`}>
                 {trending}
               </Link>

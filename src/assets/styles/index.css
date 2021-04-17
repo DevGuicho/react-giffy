@@ -9,7 +9,6 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: "Raleway", sans-serif;
 }
 body {
   background: #1c1427;
@@ -47,4 +46,9 @@ body {
   border-radius: 5px;
   font-weight: 600;
   color: #7eca9c;
+}
+
+h2 {
+  color: white;
+  margin-bottom: 20px;
 }

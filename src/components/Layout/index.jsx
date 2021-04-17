@@ -1,3 +1,4 @@
+import Footer from "components/Footer";
 import Header from "components/Header";
 import React from "react";
 import "./Layout.css";
@@ -7,9 +8,7 @@ const Layout = ({ children }) => {
     <div className="Layout">
       <Header />
       {children}
-      <footer>
-        <p>coded bay Luis Vazquez</p>
-      </footer>
+      <Footer />
     </div>
   );
 };

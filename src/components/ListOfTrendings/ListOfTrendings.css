@@ -1,0 +1,26 @@
+.TrendingSearches {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.categories {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  list-style: none;
+}
+
+.categories li {
+  flex: 1 1 150px;
+  margin: 5px;
+}
+.categories a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  padding: 10px 8px;
+  border-radius: 5px;
+  color: white;
+  background-color: #7b113a;
+}

@@ -16,6 +16,7 @@ const SearchResult = () => {
 
   useEffect(() => {
     localStorage.setItem("lastKeyword", keyword);
+    window.scroll(0, 0);
   }, [keyword]);
 
   return (

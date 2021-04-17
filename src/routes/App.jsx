@@ -10,6 +10,7 @@ const LazySearchResult = lazy(() => import("../pages/SearchResult"));
 const LazyGif = lazy(() => import("../pages/GifDetail"));
 const LazyLogin = lazy(() => import("../pages/LoginPage"));
 const LazyRegister = lazy(() => import("../pages/RegisterPage"));
+const LazyNotFound = lazy(() => import("../pages/NotFound"));
 
 const App = () => {
   const { authenticate, isLogged } = useUser();
@@ -23,15 +24,16 @@ const App = () => {
   return (
     <BrowserRouter>
       <Layout>
-        <Switch>
-          <Suspense fallback={<Spinner />}>
+        <Suspense fallback={<Spinner />}>
+          <Switch>
             <Route exact path="/" component={LazyHome} />
             <Route exact path="/search/:keyword" component={LazySearchResult} />
             <Route exact path="/gif/:id" component={LazyGif} />
             <Route exact path="/login" component={LazyLogin} />
             <Route exact path="/register" component={LazyRegister} />
-          </Suspense>
-        </Switch>
+            <Route component={LazyNotFound} />
+          </Switch>
+        </Suspense>
       </Layout>
     </BrowserRouter>
   );
