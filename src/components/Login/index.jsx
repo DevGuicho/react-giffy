@@ -18,8 +18,8 @@ const Login = ({ handleClose }) => {
   };
 
   useEffect(() => {
-    if (isLogged) history.push("/");
-  }, [isLogged, history]);
+    if (isLogged && !handleClose) history.push("/");
+  }, [isLogged, history, handleClose]);
 
   const handleSubmit = ({ email, password }) => {
     logIn({ email, password }).then(() => {

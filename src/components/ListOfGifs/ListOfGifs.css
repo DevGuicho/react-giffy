@@ -1,0 +1,40 @@
+:root {
+  --results-columns: 1;
+}
+
+.ListOfGifs {
+  min-height: 100vh;
+  width: 100%;
+}
+.ListOfGifs-grid {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 10px;
+  align-items: center;
+}
+
+.ListOfGifs-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+@media (min-width: 600px) {
+  :root {
+    --results-columns: 2;
+  }
+}
+
+@media (min-width: 800px) {
+  :root {
+    --results-columns: 3;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --results-columns: 4;
+  }
+}

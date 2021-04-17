@@ -1,9 +1,15 @@
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
-const useNearScreen = () => {
+const useNearScreen = ({ keyword } = {}) => {
   const [isNearScreen, setIsNearScreen] = useState(false);
   const [page, setPage] = useState(0);
+
   const observer = useRef();
+
+  useEffect(() => {
+    setPage(0);
+  }, [keyword]);
+
   const elementRef = useCallback(
     (node) => {
       if (observer.current) observer.current.disconnect();

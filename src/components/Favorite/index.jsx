@@ -1,27 +1,47 @@
+import React, { useState } from "react";
+import Login from "components/Login";
+import ModalPortal from "components/Modal";
 import useFavorites from "Hooks/useFavorites";
-import React from "react";
+import useUser from "Hooks/useUser";
+import "./Favorite.css";
 
 const Favorite = ({ gifId, url }) => {
+  const [showModal, setShowModal] = useState(false);
   const { favorite, addFavorite, deleteFavorite, setFavorite } = useFavorites({
     gifId,
   });
+  const { isLogged } = useUser();
 
+  const handleClose = () => {
+    setShowModal(false);
+  };
   const handleClick = () => {
-    addFavorite({ gifId, url }).then((fav) => setFavorite(fav));
+    if (!isLogged) return setShowModal(true);
+
+    if (favorite) {
+      deleteFavorite({ id: favorite.id });
+    } else {
+      addFavorite({ gifId, url }).then((fav) => setFavorite(fav));
+    }
   };
-  const handleDeleteFav = () => {
-    deleteFavorite({ id: favorite.id });
-  };
-  if (favorite)
-    return (
-      <button onClick={handleDeleteFav}>
-        <i className="fas fa-heart-broken"></i>
-      </button>
-    );
+
   return (
-    <button onClick={handleClick}>
-      <i className="fas fa-heart"></i>
-    </button>
+    <>
+      <button className="Favorite" onClick={handleClick}>
+        <span aria-label="Fav Gif" role="img">
+          {favorite ? (
+            <i className="fas fa-heart-broken"></i>
+          ) : (
+            <i className="fas fa-heart"></i>
+          )}
+        </span>
+      </button>
+      {showModal && (
+        <ModalPortal handleClose={handleClose}>
+          {<Login handleClose={handleClose} />}
+        </ModalPortal>
+      )}
+    </>
   );
 };
 

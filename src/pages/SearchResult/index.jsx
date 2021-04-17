@@ -8,7 +8,7 @@ import { useParams } from "react-router";
 
 const SearchResult = () => {
   const { keyword } = useParams();
-  const { page, elementRef } = useNearScreen();
+  const { page, elementRef } = useNearScreen({ keyword });
   const { listOfGifs, isLoading, isLoadingNewGifs } = useGifs({
     keyword,
     page,

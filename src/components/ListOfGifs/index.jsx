@@ -1,13 +1,13 @@
 import Gif from "components/Gif";
 import React from "react";
-
+import "./ListOfGifs.css";
 const ListOfGifs = ({ title, listOfGifs }) => {
   return (
-    <section>
+    <section className="ListOfGifs">
       <h2>{title}</h2>
-      <ol>
+      <ol className="ListOfGifs-grid">
         {listOfGifs.map((gif) => (
-          <li key={gif.id}>
+          <li className="ListOfGifs-item" key={gif.id}>
             <Gif id={gif.id} url={gif.url} title={gif.title} />
           </li>
         ))}
